@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Este documento define los requerimientos para el backend del sistema de pedidos para restaurantes. El sistema proporcionará una API REST que permitirá a los clientes realizar pedidos desde sus mesas mediante códigos QR, con validación de IP Wi-Fi del restaurante. Aunque inicialmente se desarrollará solo para español, la estructura de base de datos estará preparada para soportar múltiples idiomas en el futuro. El backend incluirá autenticación JWT, gestión de roles, y actualizaciones en tiempo real mediante WebSockets. El frontend será desarrollado por separado en otro repositorio.
+Este documento define los requerimientos para el backend del sistema de pedidos para restaurantes. El sistema proporcionará una API REST que permitirá a los clientes ver el menú mediante códigos QR y realizar pedidos desde tablets fijas instaladas en el restaurante. Aunque inicialmente se desarrollará solo para español, la estructura de base de datos estará preparada para soportar múltiples idiomas en el futuro. El backend incluirá autenticación JWT, gestión de roles, y actualizaciones en tiempo real mediante WebSockets. El frontend será desarrollado por separado en otro repositorio.
 
 ## Requirements
 
@@ -19,24 +19,24 @@ Este documento define los requerimientos para el backend del sistema de pedidos 
 
 ### Requirement 2
 
-**User Story:** Como cliente del restaurante, quiero poder realizar pedidos solo cuando esté conectado al Wi-Fi del restaurante, para que el sistema garantice que estoy físicamente presente en el establecimiento.
+**User Story:** Como cliente del restaurante, quiero escanear un código QR para ver el menú, para que pueda revisar los platos disponibles sin necesidad de conexión especial.
 
 #### Acceptance Criteria
 
-1. WHEN un cliente intenta realizar un pedido THEN el sistema SHALL validar que la IP del cliente esté en la lista de IPs autorizadas del restaurante
-2. IF la IP del cliente no está autorizada THEN el sistema SHALL rechazar el pedido con un mensaje de error apropiado
-3. WHEN se recibe un pedido THEN el sistema SHALL verificar la IP tanto en el frontend como en el backend para evitar manipulaciones
-4. WHEN se configura un restaurante THEN el sistema SHALL permitir gestionar la lista de IPs públicas autorizadas
+1. WHEN un cliente escanea el código QR THEN el sistema SHALL mostrar el menú completo del restaurante
+2. WHEN se solicita el menú via QR THEN el sistema SHALL devolver todas las categorías y platos sin requerir autenticación
+3. WHEN se muestra el menú via QR THEN el sistema SHALL ser de solo lectura, sin permitir realizar pedidos
+4. WHEN se genera el QR THEN el sistema SHALL crear un enlace público al menú del restaurante
 
 ### Requirement 3
 
-**User Story:** Como encargado del restaurante, quiero gestionar las mesas y generar códigos QR únicos, para que los clientes puedan acceder al menú desde cada mesa específica.
+**User Story:** Como encargado del restaurante, quiero gestionar las mesas del restaurante, para que pueda controlar el estado y asignación de cada mesa para los pedidos.
 
 #### Acceptance Criteria
 
-1. WHEN el encargado crea una nueva mesa THEN el sistema SHALL generar un token único para esa mesa
-2. WHEN se solicita el código QR de una mesa THEN el sistema SHALL generar un QR que contenga la URL con el token de la mesa
-3. WHEN un cliente escanea un QR THEN el sistema SHALL asociar los pedidos posteriores con esa mesa específica
+1. WHEN el encargado crea una nueva mesa THEN el sistema SHALL registrar la mesa con un número identificador
+2. WHEN se realiza un pedido desde tablet THEN el sistema SHALL permitir seleccionar la mesa correspondiente
+3. WHEN se consulta una mesa THEN el sistema SHALL mostrar su estado actual y pedidos asociados
 4. WHEN el encargado consulta las mesas THEN el sistema SHALL mostrar el estado actual de cada mesa (libre, ocupada, esperando pedido, etc.)
 
 ### Requirement 4

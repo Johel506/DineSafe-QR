@@ -25,7 +25,6 @@
 - [ ] 2. Implement database schema and migrations
 - [ ] 2.1 Create core Prisma schema models
   - Define Restaurant, User, and Language models
-  - Create RestaurantIp model for IP authorization
   - Set up basic relationships and constraints
   - Run git status and then commit changes with message describing core models
   - _Requirements: 6.1, 6.2, 6.3_
@@ -88,26 +87,19 @@
   - Run git status and then commit changes with message describing restaurant service
   - _Requirements: 2.4, 3.4_
 
-- [ ] 4.2 Implement IP authorization management
-  - Create RestaurantIpService for IP management
-  - Add CRUD operations for authorized IPs
-  - Implement IP validation utilities
-  - Run git status and then commit changes with message describing IP management
-  - _Requirements: 2.1, 2.2, 2.3, 2.4_
-
-- [ ] 4.3 Create restaurant controller and endpoints
-  - Implement RestaurantController with all endpoints
-  - Add IP management endpoints
+- [ ] 4.2 Create restaurant controller and endpoints
+  - Implement RestaurantController with CRUD endpoints
+  - Add QR menu generation endpoint
   - Set up proper authentication and authorization
   - Run git status and then commit changes with message describing restaurant controller
   - _Requirements: 2.4, 3.4_
 
-- [ ] 4.4 Write restaurant module tests
-  - Create unit tests for restaurant services
+- [ ] 4.3 Write restaurant module tests
+  - Create unit tests for restaurant service
   - Write integration tests for restaurant endpoints
-  - Test IP authorization functionality
+  - Test QR menu generation functionality
   - Run git status and then commit changes with message describing restaurant tests
-  - _Requirements: 2.1, 2.2, 2.3, 2.4_
+  - _Requirements: 2.4, 3.4_
 
 - [ ] 5. Implement menu management system
 - [ ] 5.1 Create menu services and DTOs
@@ -139,16 +131,16 @@
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 6.1, 6.2, 6.3_
 
 - [ ] 6. Implement table management system
-- [ ] 6.1 Create table service with token generation
+- [ ] 6.1 Create table service and DTOs
   - Implement TableService with CRUD operations
-  - Create unique token generation for QR codes
+  - Create DTOs for table creation and updates
   - Add table status management logic
   - Run git status and then commit changes with message describing table service
   - _Requirements: 3.1, 3.2, 3.3_
 
 - [ ] 6.2 Create table controller and endpoints
   - Implement TableController with management endpoints
-  - Add table info endpoint for QR code access
+  - Add table selection endpoints for order creation
   - Set up proper validation and error handling
   - Run git status and then commit changes with message describing table controller
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
@@ -156,7 +148,7 @@
 - [ ] 6.3 Write table management tests
   - Create unit tests for table service
   - Write integration tests for table endpoints
-  - Test token generation and validation
+  - Test table status management and selection
   - Run git status and then commit changes with message describing table tests
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
@@ -169,7 +161,7 @@
   - _Requirements: 7.1, 7.2, 7.3, 7.4_
 
 - [ ] 7.2 Implement order creation with validation
-  - Add order creation endpoint with IP validation
+  - Add order creation endpoint with table selection
   - Implement table-order association logic
   - Create order total calculation
   - Run git status and then commit changes with message describing order creation
@@ -189,154 +181,132 @@
   - Run git status and then commit changes with message describing order tests
   - _Requirements: 2.1, 2.2, 2.3, 7.1, 7.2, 7.3, 7.4_
 
-- [ ] 8. Implement IP validation middleware
-- [ ] 8.1 Create IP validation service and middleware
-  - Implement IP validation service
-  - Create middleware for IP checking
-  - Add IP extraction utilities from requests
-  - Run git status and then commit changes with message describing IP validation
-  - _Requirements: 2.1, 2.2, 2.3_
-
-- [ ] 8.2 Integrate IP validation with order endpoints
-  - Add IP validation to order creation
-  - Create proper error responses for invalid IPs
-  - Test IP validation in different scenarios
-  - Run git status and then commit changes with message describing IP integration
-  - _Requirements: 2.1, 2.2, 2.3, 2.4_
-
-- [ ] 8.3 Write IP validation tests
-  - Create unit tests for IP validation service
-  - Write integration tests for IP middleware
-  - Test various IP validation scenarios
-  - Run git status and then commit changes with message describing IP validation tests
-  - _Requirements: 2.1, 2.2, 2.3, 2.4_
-
-- [ ] 9. Implement WebSocket gateway for real-time updates
-- [ ] 9.1 Set up WebSocket gateway with Socket.IO
+- [ ] 8. Implement WebSocket gateway for real-time updates
+- [ ] 8.1 Set up WebSocket gateway with Socket.IO
   - Install and configure Socket.IO
   - Create WebSocket gateway with connection handling
   - Set up room-based communication per restaurant
   - Run git status and then commit changes with message describing WebSocket setup
   - _Requirements: 4.1, 4.3_
 
-- [ ] 9.2 Implement real-time order notifications
+- [ ] 8.2 Implement real-time order notifications
   - Add order creation notifications
   - Implement order status change broadcasts
   - Create user role-based notification filtering
   - Run git status and then commit changes with message describing order notifications
   - _Requirements: 4.1, 4.2, 4.4_
 
-- [ ] 9.3 Write WebSocket integration tests
+- [ ] 8.3 Write WebSocket integration tests
   - Create WebSocket connection tests
   - Write notification delivery tests
   - Test room-based communication
   - Run git status and then commit changes with message describing WebSocket tests
   - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-- [ ] 10. Implement kitchen management endpoints
-- [ ] 10.1 Create kitchen-specific services
+- [ ] 9. Implement kitchen management endpoints
+- [ ] 9.1 Create kitchen-specific services
   - Implement KitchenService for order management
   - Add order filtering for kitchen workflow
   - Create order priority and timing logic
   - Run git status and then commit changes with message describing kitchen services
   - _Requirements: 8.1, 8.2, 8.3_
 
-- [ ] 10.2 Create kitchen controller and endpoints
+- [ ] 9.2 Create kitchen controller and endpoints
   - Implement KitchenController with order endpoints
   - Add order status update functionality
   - Create kitchen dashboard data endpoints
   - Run git status and then commit changes with message describing kitchen controller
   - _Requirements: 8.1, 8.2, 8.3, 8.4_
 
-- [ ] 10.3 Write kitchen management tests
+- [ ] 9.3 Write kitchen management tests
   - Create unit tests for kitchen service
   - Write integration tests for kitchen endpoints
   - Test order filtering and status updates
   - Run git status and then commit changes with message describing kitchen tests
   - _Requirements: 8.1, 8.2, 8.3, 8.4_
 
-- [ ] 11. Add comprehensive error handling
-- [ ] 11.1 Create global exception filters
+- [ ] 10. Add comprehensive error handling
+- [ ] 10.1 Create global exception filters
   - Implement global exception filter
   - Create custom exception classes
   - Add error response formatting
   - Run git status and then commit changes with message describing exception handling
   - _Requirements: 5.3, 2.2_
 
-- [ ] 11.2 Implement internationalized error messages
+- [ ] 10.2 Implement internationalized error messages
   - Create error translation structure
   - Add Spanish error messages
   - Implement error message localization service
   - Run git status and then commit changes with message describing error internationalization
   - _Requirements: 5.3, 2.2_
 
-- [ ] 11.3 Add logging and monitoring
+- [ ] 10.3 Add logging and monitoring
   - Set up application logging
   - Add request/response logging
   - Create error tracking and monitoring
   - Run git status and then commit changes with message describing logging setup
   - _Requirements: 5.3, 2.2_
 
-- [ ] 11.4 Write error handling tests
+- [ ] 10.4 Write error handling tests
   - Create tests for exception filters
   - Write tests for error scenarios
   - Test error message localization
   - Run git status and then commit changes with message describing error handling tests
   - _Requirements: 5.3, 2.2_
 
-- [ ] 12. Implement API documentation and validation
-- [ ] 12.1 Set up Swagger/OpenAPI documentation
+- [ ] 11. Implement API documentation and validation
+- [ ] 11.1 Set up Swagger/OpenAPI documentation
   - Install and configure Swagger module
   - Add API documentation decorators
   - Create comprehensive endpoint documentation
   - Run git status and then commit changes with message describing API documentation
   - _Requirements: All requirements for API documentation_
 
-- [ ] 12.2 Enhance DTO validation and API versioning
+- [ ] 11.2 Enhance DTO validation and API versioning
   - Add comprehensive validation to all DTOs
   - Implement API versioning structure
   - Create request/response interceptors
   - Run git status and then commit changes with message describing validation and versioning
   - _Requirements: All requirements for API documentation_
 
-- [ ] 13. Create comprehensive test suite
-- [ ] 13.1 Write integration tests for all modules
+- [ ] 12. Create comprehensive test suite
+- [ ] 12.1 Write integration tests for all modules
   - Create integration tests for all API endpoints
   - Set up test database configuration
   - Add comprehensive test data setup
   - Run git status and then commit changes with message describing integration tests
   - _Requirements: All requirements for testing coverage_
 
-- [ ] 13.2 Create E2E tests for complete workflows
+- [ ] 12.2 Create E2E tests for complete workflows
   - Write E2E tests for complete order flow
   - Create authentication flow tests
   - Add multi-user scenario tests
   - Run git status and then commit changes with message describing E2E tests
   - _Requirements: All requirements for testing coverage_
 
-- [ ] 13.3 Set up test coverage and reporting
+- [ ] 12.3 Set up test coverage and reporting
   - Configure test coverage reporting
   - Set up automated test running
   - Create test documentation
   - Run git status and then commit changes with message describing test coverage setup
   - _Requirements: All requirements for testing coverage_
 
-- [ ] 14. Set up deployment configuration
-- [ ] 14.1 Configure environment-specific settings
+- [ ] 13. Set up deployment configuration
+- [ ] 13.1 Configure environment-specific settings
   - Set up production environment configuration
   - Create environment variable documentation
   - Configure database connection for production
   - Run git status and then commit changes with message describing production configuration
   - _Requirements: Infrastructure and deployment needs_
 
-- [ ] 14.2 Create deployment scripts and documentation
+- [ ] 13.2 Create deployment scripts and documentation
   - Create database migration scripts for production
   - Add health check endpoints
   - Create deployment documentation for Railway/Render
   - Run git status and then commit changes with message describing deployment setup
   - _Requirements: Infrastructure and deployment needs_
 
-- [ ] 14.3 Set up monitoring and logging for production
+- [ ] 13.3 Set up monitoring and logging for production
   - Configure production logging
   - Set up error monitoring
   - Add performance monitoring setup

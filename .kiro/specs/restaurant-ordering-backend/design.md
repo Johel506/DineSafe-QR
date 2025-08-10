@@ -2,7 +2,7 @@
 
 ## Overview
 
-El backend del sistema de pedidos para restaurantes será desarrollado como una API REST usando NestJS con TypeScript, PostgreSQL como base de datos y Prisma como ORM. El sistema implementará autenticación JWT, WebSockets para comunicación en tiempo real, y una arquitectura modular que permita escalabilidad futura para múltiples idiomas.
+El backend del sistema de pedidos para restaurantes será desarrollado como una API REST usando NestJS con TypeScript, PostgreSQL como base de datos y Prisma como ORM. El sistema permitirá mostrar el menú mediante códigos QR públicos y realizar pedidos desde tablets fijas. Implementará autenticación JWT, WebSockets para comunicación en tiempo real, y una arquitectura modular que permita escalabilidad futura para múltiples idiomas.
 
 ## Architecture
 
@@ -101,23 +101,11 @@ model Restaurant {
   updatedAt   DateTime @updatedAt
   
   // Relations
-  authorizedIps RestaurantIp[]
   tables        Table[]
   menuItems     MenuItem[]
   categories    Category[]
   orders        Order[]
   users         User[]
-}
-
-model RestaurantIp {
-  id           String     @id @default(cuid())
-  ipAddress    String
-  description  String?
-  restaurantId String
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-  createdAt    DateTime   @default(now())
-  
-  @@unique([restaurantId, ipAddress])
 }
 
 model Language {
@@ -193,7 +181,6 @@ model MenuItem_Translation {
 model Table {
   id           String      @id @default(cuid())
   number       String
-  token        String      @unique
   status       TableStatus @default(AVAILABLE)
   restaurantId String
   restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
@@ -218,7 +205,6 @@ model Order {
   orderNumber  String      @unique
   status       OrderStatus @default(PENDING)
   totalAmount  Decimal     @db.Decimal(10,2)
-  customerIp   String
   notes        String?
   restaurantId String
   tableId      String
@@ -285,24 +271,25 @@ enum UserRole {
 
 #### RestaurantService
 - Restaurant CRUD operations
-- IP authorization management
 - Restaurant configuration
+- QR code generation for menu display
 
 #### MenuService
 - Menu item and category management
 - Multi-language structure (ready for future expansion)
 - Price and availability management
+- Public menu access for QR codes
 
 #### OrderService
 - Order creation and management
 - Order status updates
-- IP validation for orders
 - Order number generation
+- Table-order association
 
 #### TableService
 - Table management and status tracking
-- QR token generation and validation
-- Table-order association
+- Table selection for orders
+- Table status updates
 
 #### WebSocketService
 - Real-time order notifications
@@ -322,9 +309,7 @@ POST /auth/logout
 ```
 GET    /restaurants/:id
 PUT    /restaurants/:id
-GET    /restaurants/:id/authorized-ips
-POST   /restaurants/:id/authorized-ips
-DELETE /restaurants/:id/authorized-ips/:ipId
+GET    /restaurants/:id/qr-menu
 ```
 
 #### Menu
@@ -346,7 +331,6 @@ GET    /restaurants/:id/tables
 POST   /restaurants/:id/tables
 PUT    /restaurants/:id/tables/:tableId
 DELETE /restaurants/:id/tables/:tableId
-GET    /tables/:token/info
 ```
 
 #### Orders
@@ -374,7 +358,7 @@ DELETE /restaurants/:id/users/:userId
 ```typescript
 export class CreateOrderDto {
   @IsString()
-  tableToken: string;
+  tableId: string;
 
   @IsArray()
   @ValidateNested({ each: true })
@@ -460,9 +444,9 @@ export class MenuItemDto {
     "insufficient_permissions": "Permisos insuficientes"
   },
   "orders": {
-    "invalid_ip": "No puedes realizar pedidos desde esta ubicación",
     "table_not_found": "Mesa no encontrada",
-    "menu_item_unavailable": "Producto no disponible"
+    "menu_item_unavailable": "Producto no disponible",
+    "invalid_order_data": "Datos del pedido inválidos"
   },
   "validation": {
     "required_field": "Este campo es requerido",
@@ -475,7 +459,7 @@ export class MenuItemDto {
 - **401 Unauthorized**: Invalid JWT token or expired session
 - **403 Forbidden**: Insufficient permissions for requested action
 - **404 Not Found**: Resource not found (restaurant, table, order, etc.)
-- **400 Bad Request**: Invalid IP address for order placement
+- **400 Bad Request**: Invalid order data or malformed request
 - **409 Conflict**: Duplicate resource creation attempts
 - **422 Unprocessable Entity**: Business logic validation failures
 
@@ -496,8 +480,8 @@ export class MenuItemDto {
 ### E2E Testing
 - Complete order flow testing
 - Multi-user role testing
-- IP validation testing
 - Real-time notification testing
+- QR menu access testing
 
 ### Test Structure
 ```
